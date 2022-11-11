@@ -2,7 +2,6 @@ package scot.davidhunter.twopointfivejavagame;
 
 import java.awt.BorderLayout;
 import java.awt.Canvas;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
@@ -10,6 +9,8 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
 import javax.swing.JFrame;
+
+import scot.davidhunter.twopointfivejavagame.gfx.SpriteSheet;
 
 public class Game extends Canvas implements Runnable
 {
@@ -27,6 +28,8 @@ public class Game extends Canvas implements Runnable
 	
 	private BufferedImage image = new BufferedImage( WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB );
 	private int[] pixels = ( (DataBufferInt) image.getRaster().getDataBuffer() ).getData();
+	
+	private SpriteSheet spritesheet = new SpriteSheet( "/sprite_sheet.png" );
 	
 	public Game()
 	{
@@ -129,9 +132,6 @@ public class Game extends Canvas implements Runnable
 		Graphics g = bs.getDrawGraphics();
 		
 		g.drawImage( image, 0, 0, getWidth(), getHeight(), null );
-		
-		g.setColor( Color.BLACK );
-		g.drawRect( 0, 0, getWidth(), getHeight() );
 		
 		g.dispose();
 		bs.show();
