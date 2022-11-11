@@ -10,6 +10,7 @@ import java.awt.image.DataBufferInt;
 
 import javax.swing.JFrame;
 
+import scot.davidhunter.twopointfivejavagame.gfx.Screen;
 import scot.davidhunter.twopointfivejavagame.gfx.SpriteSheet;
 
 public class Game extends Canvas implements Runnable
@@ -29,7 +30,7 @@ public class Game extends Canvas implements Runnable
 	private BufferedImage image = new BufferedImage( WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB );
 	private int[] pixels = ( (DataBufferInt) image.getRaster().getDataBuffer() ).getData();
 	
-	private SpriteSheet spritesheet = new SpriteSheet( "/sprite_sheet.png" );
+	private Screen screen;
 	
 	public Game()
 	{
@@ -45,6 +46,11 @@ public class Game extends Canvas implements Runnable
 		frame.setResizable( false );
 		frame.setLocationRelativeTo( null );
 		frame.setVisible( true );
+	}
+	
+	public void init()
+	{
+		screen = new Screen( WIDTH, HEIGHT, new SpriteSheet( "/sprite_sheet.png" ) );
 	}
 	
 	private synchronized void start()
@@ -68,6 +74,8 @@ public class Game extends Canvas implements Runnable
 		
 		long lastTimer = System.currentTimeMillis();
 		double delta = 0;
+		
+		init();
 		
 		while ( running )
 		{
@@ -113,10 +121,8 @@ public class Game extends Canvas implements Runnable
 	{
 		tickCount++;
 		
-		for ( int i = 0; i < pixels.length; i++ )
-		{
-			pixels[ i ] = i + tickCount;
-		}
+		// screen.xOffset++;
+		// screen.yOffset++;
 	}
 	
 	public void render()
@@ -128,6 +134,8 @@ public class Game extends Canvas implements Runnable
 			createBufferStrategy( 3 );
 			return;
 		}
+		
+		screen.render( pixels, 0, WIDTH );
 		
 		Graphics g = bs.getDrawGraphics();
 		
