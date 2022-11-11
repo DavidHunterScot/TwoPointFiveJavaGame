@@ -1,0 +1,10 @@
+/**
+ * 
+ */
+/**
+ * @author ubuntu
+ *
+ */
+module TwoPointFiveJavaGame
+{
+}
