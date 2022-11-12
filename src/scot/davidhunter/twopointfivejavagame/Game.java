@@ -18,6 +18,7 @@ import scot.davidhunter.twopointfivejavagame.gfx.SpriteSheet;
 import scot.davidhunter.twopointfivejavagame.level.Level;
 import scot.davidhunter.twopointfivejavagame.net.GameClient;
 import scot.davidhunter.twopointfivejavagame.net.GameServer;
+import scot.davidhunter.twopointfivejavagame.net.packets.Packet00Login;
 
 public class Game extends Canvas implements Runnable
 {
@@ -82,9 +83,11 @@ public class Game extends Canvas implements Runnable
 		screen = new Screen( WIDTH, HEIGHT, new SpriteSheet( "/sprite_sheet.png" ) );
 		input = new InputHandler( this );
 		level = new Level( "/levels/water_test_level.png" );
-		player = new Player( level, 0, 0, input, JOptionPane.showInputDialog( this, "Please enter a username." ) );
-		level.addEntity( player );
-		socketClient.sendData( "ping".getBytes() );
+//		player = new Player( level, 0, 0, input, JOptionPane.showInputDialog( this, "Please enter a username." ) );
+//		level.addEntity( player );
+//		socketClient.sendData( "ping".getBytes() );
+		Packet00Login loginPacket = new Packet00Login( JOptionPane.showInputDialog( this, "Please enter a username." ) );
+		loginPacket.writeData( socketClient );
 	}
 	
 	private synchronized void start()
