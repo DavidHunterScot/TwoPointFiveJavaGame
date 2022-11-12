@@ -16,6 +16,8 @@ import scot.davidhunter.twopointfivejavagame.gfx.Colours;
 import scot.davidhunter.twopointfivejavagame.gfx.Screen;
 import scot.davidhunter.twopointfivejavagame.gfx.SpriteSheet;
 import scot.davidhunter.twopointfivejavagame.level.Level;
+import scot.davidhunter.twopointfivejavagame.net.GameClient;
+import scot.davidhunter.twopointfivejavagame.net.GameServer;
 
 public class Game extends Canvas implements Runnable
 {
@@ -39,6 +41,9 @@ public class Game extends Canvas implements Runnable
 	public InputHandler input;
 	public Level level;
 	public Player player;
+	
+	private GameClient socketClient;
+	private GameServer socketServer;
 	
 	public Game()
 	{
@@ -79,12 +84,22 @@ public class Game extends Canvas implements Runnable
 		level = new Level( "/levels/water_test_level.png" );
 		player = new Player( level, 0, 0, input, JOptionPane.showInputDialog( this, "Please enter a username." ) );
 		level.addEntity( player );
+		socketClient.sendData( "ping".getBytes() );
 	}
 	
 	private synchronized void start()
 	{
 		running = true;
 		new Thread( this ).start();
+		
+		if ( JOptionPane.showConfirmDialog( this, "Do you want to run the server?" ) == 0 )
+		{
+			socketServer = new GameServer( this );
+			socketServer.start();
+		}
+		
+		socketClient = new GameClient( this, "localhost" );
+		socketClient.start();
 	}
 	
 	private synchronized void stop()
@@ -138,7 +153,7 @@ public class Game extends Canvas implements Runnable
 			if ( System.currentTimeMillis() - lastTimer >= 1000 )
 			{
 				lastTimer += 1000;
-				System.out.println( ticks + " UPS, " + frames + " FPS" );
+				frame.setTitle( ticks + " UPS, " + frames + " FPS" );
 				frames = 0;
 				ticks = 0;
 			}
