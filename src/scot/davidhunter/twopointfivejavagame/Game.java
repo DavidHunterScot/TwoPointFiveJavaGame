@@ -12,7 +12,6 @@ import javax.swing.JFrame;
 
 import scot.davidhunter.twopointfivejavagame.entities.Player;
 import scot.davidhunter.twopointfivejavagame.gfx.Colours;
-import scot.davidhunter.twopointfivejavagame.gfx.Font;
 import scot.davidhunter.twopointfivejavagame.gfx.Screen;
 import scot.davidhunter.twopointfivejavagame.gfx.SpriteSheet;
 import scot.davidhunter.twopointfivejavagame.level.Level;
@@ -174,7 +173,6 @@ public class Game extends Canvas implements Runnable
 			{
 				colour = Colours.get( -1, -1, -1, 500 );
 			}
-			Font.render( ( x % 10 ) + "", screen, 0 + ( x * 8 ), 0, colour );
 		}
 		
 		level.renderEntities( screen );

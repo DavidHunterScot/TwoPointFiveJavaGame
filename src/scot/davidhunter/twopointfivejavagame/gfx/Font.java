@@ -4,7 +4,7 @@ public class Font
 {
 	public static String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ      " + "0123456789.,:;'\"!?$%()-=+/      ";
 	
-	public static void render( String msg, Screen screen, int x, int y, int colour )
+	public static void render( String msg, Screen screen, int x, int y, int colour, int scale )
 	{
 		msg = msg.toUpperCase();
 		
@@ -13,7 +13,7 @@ public class Font
 			int charIndex = chars.indexOf( msg.charAt( i ) );
 			
 			if ( charIndex >= 0 )
-				screen.render( x + ( i * 8 ), y, charIndex + 30 * 32, colour );
+				screen.render( x + ( i * 8 ), y, charIndex + 30 * 32, colour, 0x00, scale );
 		}
 	}
 }
