@@ -28,7 +28,10 @@ public class Level
 		{
 			for ( int x = 0; x < width; x++ )
 			{
-				tiles[ x + y * width ] = Tile.GRASS.getId();
+				if ( x * y % 10 < 7 )
+					tiles[ x + y * width ] = Tile.GRASS.getId();
+				else
+					tiles[ x + y * width ] = Tile.STONE.getId();
 			}
 		}
 	}
@@ -71,9 +74,9 @@ public class Level
 		}
 	}
 	
-	private Tile getTile( int x, int y )
+	public Tile getTile( int x, int y )
 	{
-		if ( x < 0 || x > width || y < 0 || y > height )
+		if ( x < 0 || x >= width || y < 0 || y >= height )
 			return Tile.VOID;
 		
 		return Tile.tiles[ tiles[ x + y * width ] ];

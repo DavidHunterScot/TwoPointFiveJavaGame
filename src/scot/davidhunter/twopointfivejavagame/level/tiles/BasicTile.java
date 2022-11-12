@@ -1,7 +1,7 @@
-package scot.davidhunter.twopointfivejavagame.level;
+package scot.davidhunter.twopointfivejavagame.level.tiles;
 
 import scot.davidhunter.twopointfivejavagame.gfx.Screen;
-import scot.davidhunter.twopointfivejavagame.level.tiles.Tile;
+import scot.davidhunter.twopointfivejavagame.level.Level;
 
 public class BasicTile extends Tile
 {
