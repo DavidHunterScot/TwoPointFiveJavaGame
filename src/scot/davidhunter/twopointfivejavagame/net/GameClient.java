@@ -12,6 +12,7 @@ import scot.davidhunter.twopointfivejavagame.entities.PlayerMP;
 import scot.davidhunter.twopointfivejavagame.net.packets.Packet;
 import scot.davidhunter.twopointfivejavagame.net.packets.Packet.PacketTypes;
 import scot.davidhunter.twopointfivejavagame.net.packets.Packet00Login;
+import scot.davidhunter.twopointfivejavagame.net.packets.Packet01Disconnect;
 
 public class GameClient extends Thread
 {
@@ -81,6 +82,9 @@ public class GameClient extends Thread
 				
 				break;
 			case DISCONNECT:
+				packet = new Packet01Disconnect( data );
+				System.out.println( "[" + address.getHostAddress() + ":" + port + "] " + ( (Packet01Disconnect) packet ).getUsername() + " has left the world..." );
+				game.level.removePlayerMP( ( (Packet01Disconnect) packet ).getUsername() );
 				break;
 		}
 	}

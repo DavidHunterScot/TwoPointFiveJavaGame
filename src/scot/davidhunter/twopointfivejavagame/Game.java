@@ -30,7 +30,7 @@ public class Game extends Canvas implements Runnable
 	public static final int SCALE = 3;
 	public static final String NAME = "Two Point Five Java Game";
 	
-	private JFrame frame;
+	public JFrame frame;
 	
 	public boolean running = false;
 	public int tickCount = 0;
@@ -41,11 +41,12 @@ public class Game extends Canvas implements Runnable
 	
 	private Screen screen;
 	public InputHandler input;
+	public WindowHandler windowHandler;
 	public Level level;
 	public Player player;
 	
-	private GameClient socketClient;
-	private GameServer socketServer;
+	public GameClient socketClient;
+	public GameServer socketServer;
 	
 	public Game()
 	{
@@ -84,6 +85,7 @@ public class Game extends Canvas implements Runnable
 		screen = new Screen( WIDTH, HEIGHT, new SpriteSheet( "/sprite_sheet.png" ) );
 		input = new InputHandler( this );
 		level = new Level( "/levels/water_test_level.png" );
+		windowHandler = new WindowHandler( this );
 		player = new PlayerMP( level, 100, 100, input, JOptionPane.showInputDialog( this, "Please enter a username." ), null, -1 );
 		level.addEntity( player );
 		Packet00Login loginPacket = new Packet00Login( player.getUsername() );

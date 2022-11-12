@@ -9,6 +9,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import scot.davidhunter.twopointfivejavagame.entities.Entity;
+import scot.davidhunter.twopointfivejavagame.entities.PlayerMP;
 import scot.davidhunter.twopointfivejavagame.gfx.Screen;
 import scot.davidhunter.twopointfivejavagame.level.tiles.Tile;
 
@@ -73,6 +74,7 @@ public class Level
 		}
 	}
 	
+	@SuppressWarnings("unused")
 	private void saveLevelToFile()
 	{
 		try
@@ -162,5 +164,20 @@ public class Level
 	public void addEntity( Entity entity )
 	{
 		this.entities.add( entity );
+	}
+	
+	public void removePlayerMP( String username )
+	{
+		int index = 0;
+		
+		for ( Entity e : entities )
+		{
+			if ( e instanceof PlayerMP && ( (PlayerMP) e ).getUsername().equals( username ) )
+				break;
+			
+			index++;
+		}
+		
+		this.entities.remove( index );
 	}
 }
