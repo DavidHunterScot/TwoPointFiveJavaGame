@@ -156,18 +156,15 @@ public class GameServer extends Thread
 	
 	public void sendData( byte[] data, InetAddress ipAddress, int port )
 	{
-		if ( ! game.isApplet )
+		DatagramPacket packet = new DatagramPacket( data, data.length, ipAddress, port );
+		
+		try
 		{
-			DatagramPacket packet = new DatagramPacket( data, data.length, ipAddress, port );
-			
-			try
-			{
-				this.socket.send( packet );
-			}
-			catch ( IOException e )
-			{
-				e.printStackTrace();
-			}
+			this.socket.send( packet );
+		}
+		catch ( IOException e )
+		{
+			e.printStackTrace();
 		}
 	}
 	

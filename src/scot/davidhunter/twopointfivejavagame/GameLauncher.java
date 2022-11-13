@@ -1,39 +1,14 @@
 package scot.davidhunter.twopointfivejavagame;
 
-import java.applet.Applet;
 import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
 
-@SuppressWarnings({ "serial" })
-public class GameLauncher extends Applet
+public class GameLauncher
 {
 	private static Game game = new Game();
 	
 	public static final boolean DEBUG = false;
-	
-	@Override
-	public void init()
-	{
-		setLayout( new BorderLayout() );
-		add( game, BorderLayout.CENTER );
-		setMaximumSize( Game.DIMENSIONS );
-		setMinimumSize( Game.DIMENSIONS );
-		setPreferredSize( Game.DIMENSIONS );
-		game.isApplet = true;
-	}
-	
-	@Override
-	public void start()
-	{
-		game.start();
-	}
-	
-	@Override
-	public void stop()
-	{
-		game.stop();
-	}
 	
 	public static void main( String[] args )
 	{
