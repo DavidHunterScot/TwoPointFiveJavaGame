@@ -30,7 +30,8 @@ public class Packet00Login extends Packet
 	@Override
 	public void writeData( GameClient client )
 	{
-		client.sendData( getData() );
+		if ( client != null )
+			client.sendData( getData() );
 	}
 	
 	@Override

@@ -12,7 +12,6 @@ import javax.swing.JOptionPane;
 
 import scot.davidhunter.twopointfivejavagame.entities.Player;
 import scot.davidhunter.twopointfivejavagame.entities.PlayerMP;
-import scot.davidhunter.twopointfivejavagame.gfx.Colours;
 import scot.davidhunter.twopointfivejavagame.gfx.Screen;
 import scot.davidhunter.twopointfivejavagame.gfx.SpriteSheet;
 import scot.davidhunter.twopointfivejavagame.level.Level;
@@ -54,6 +53,8 @@ public class Game extends Canvas implements Runnable
 	
 	public boolean debug = true;
 	
+	private String hostname;
+	
 	public void init()
 	{
 		game = this;
@@ -77,34 +78,65 @@ public class Game extends Canvas implements Runnable
 		screen = new Screen( WIDTH, HEIGHT, new SpriteSheet( "/sprite_sheet.png" ) );
 		input = new InputHandler( this );
 		level = new Level( "/levels/water_test_level.png" );
+		
 		player = new PlayerMP( level, 100, 100, input, JOptionPane.showInputDialog( this, "Please enter a username." ), null, -1 );
+		Packet00Login loginPacket = new Packet00Login( player.getUsername(), player.x, player.y );
+		if ( socketServer != null )
+			socketServer.addConnection( (PlayerMP) player, loginPacket );
+		loginPacket.writeData( socketClient );
+		
 		level.addEntity( player );
 		
-		Packet00Login loginPacket = new Packet00Login( player.getUsername(), player.x, player.y );
-		
-		if ( socketServer != null )
-		{
-			socketServer.addConnection( (PlayerMP) player, loginPacket );
-		}
-		
-		loginPacket.writeData( socketClient );
+		requestFocus();
 	}
 	
 	public synchronized void start()
 	{
 		running = true;
 		
-		thread = new Thread( this, NAME + "_main" );
-		thread.start();
+		int port = 1331;
 		
 		if ( JOptionPane.showConfirmDialog( this, "Do you want to run the server?" ) == 0 )
 		{
-			socketServer = new GameServer( this );
+			String requestedPort = JOptionPane.showInputDialog( "Which port number would you like the server to listen on?" );
+			
+			try
+			{
+				port = Integer.parseInt( requestedPort );
+			}
+			catch ( NumberFormatException e )
+			{
+				
+			}
+			
+			JOptionPane.showMessageDialog( this, "Server now running and listening on port number " + port + "..." );
+			
+			socketServer = new GameServer( this, port );
 			socketServer.start();
+			
+			socketClient = new GameClient( this, "localhost", port );
+			socketClient.start();
+		}
+		else
+		{
+			hostname = JOptionPane.showInputDialog( "Enter the hostname:port for multiplayer or cancel for singleplayer." );
+			if ( hostname != null && ! hostname.trim().equals( "" ) )
+			{
+				if ( hostname.trim().contains( ":" ) )
+				{
+					String[] hostnameParts = hostname.trim().split( ":" );
+					socketClient = new GameClient( this, hostnameParts[ 0 ], Integer.parseInt( hostnameParts[ 1 ] ) );
+				}
+				else
+				{
+					socketClient = new GameClient( this, hostname.trim(), port );
+				}
+				socketClient.start();
+			}
 		}
 		
-		socketClient = new GameClient( this, "localhost" );
-		socketClient.start();
+		thread = new Thread( this, NAME + "_main" );
+		thread.start();
 	}
 	
 	public synchronized void stop()
@@ -195,15 +227,6 @@ public class Game extends Canvas implements Runnable
 		int yOffset = player.y - ( screen.height / 2 );
 		
 		level.renderTiles( screen, xOffset, yOffset );
-		
-		for ( int x = 0; x < level.width; x++ )
-		{
-			int colour = Colours.get( -1, -1, -1, 000 );
-			if ( x % 10 == 0 && x != 0 )
-			{
-				colour = Colours.get( -1, -1, -1, 500 );
-			}
-		}
 		
 		level.renderEntities( screen );
 		

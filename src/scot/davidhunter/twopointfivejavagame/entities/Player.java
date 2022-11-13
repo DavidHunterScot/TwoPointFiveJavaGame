@@ -6,6 +6,7 @@ import scot.davidhunter.twopointfivejavagame.gfx.Colours;
 import scot.davidhunter.twopointfivejavagame.gfx.Font;
 import scot.davidhunter.twopointfivejavagame.gfx.Screen;
 import scot.davidhunter.twopointfivejavagame.level.Level;
+import scot.davidhunter.twopointfivejavagame.level.tiles.Tile;
 import scot.davidhunter.twopointfivejavagame.net.packets.Packet02Move;
 
 public class Player extends Mob
@@ -84,7 +85,7 @@ public class Player extends Mob
 			flipTop = ( movingDir - 1 ) % 2;
 		}
 		
-		int modifier = 8 * scale;
+		int modifier = Tile.SIZE * scale;
 		int xOffset = x - modifier / 2;
 		int yOffset = y - modifier / 2 - 4;
 		
@@ -113,7 +114,7 @@ public class Player extends Mob
 			}
 			
 			screen.render( xOffset, yOffset + 3, 0 + 27 * 32, waterColour, 0x00, 1 );
-			screen.render( xOffset + 8, yOffset + 3, 0 + 27 * 32, waterColour, 0x01, 1 );
+			screen.render( xOffset + Tile.SIZE, yOffset + 3, 0 + 27 * 32, waterColour, 0x01, 1 );
 		}
 		
 		screen.render( xOffset + ( modifier * flipTop ), yOffset, xTile + yTile * 32, colour, flipTop, scale );
@@ -127,7 +128,7 @@ public class Player extends Mob
 		
 		if ( username != null )
 		{
-			Font.render( username, screen, xOffset - ( ( username.length() - 1 ) / 2 * 8 ), yOffset - 10, Colours.get( -1, -1, -1, 555 ), 1 );
+			Font.render( username, screen, xOffset + Tile.SIZE - ( Tile.SIZE * ( username.length() / 2 ) ), yOffset - 10, Colours.get( -1, -1, -1, 555 ), 1 );
 		}
 	}
 	

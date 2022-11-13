@@ -19,15 +19,17 @@ public class GameClient extends Thread
 {
 	private InetAddress ipAddress;
 	private DatagramSocket socket;
+	private int port;
 	private Game game;
 	
-	public GameClient( Game game, String ipAddress )
+	public GameClient( Game game, String ipAddress, int port )
 	{
 		this.game = game;
 		try
 		{
 			this.socket = new DatagramSocket();
 			this.ipAddress = InetAddress.getByName( ipAddress );
+			this.port = port;
 		}
 		catch ( SocketException e )
 		{
@@ -56,10 +58,6 @@ public class GameClient extends Thread
 			}
 			
 			this.parsePacket( packet.getData(), packet.getAddress(), packet.getPort() );
-			
-//			String message = new String( packet.getData() );
-//			
-//			System.out.println( "SERVER > " + message );
 		}
 	}
 	
@@ -93,7 +91,7 @@ public class GameClient extends Thread
 	
 	public void sendData( byte[] data )
 	{
-		DatagramPacket packet = new DatagramPacket( data, data.length, ipAddress, 1331 );
+		DatagramPacket packet = new DatagramPacket( data, data.length, ipAddress, port );
 		
 		try
 		{

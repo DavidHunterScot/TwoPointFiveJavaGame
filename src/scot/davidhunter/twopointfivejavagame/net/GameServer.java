@@ -23,12 +23,12 @@ public class GameServer extends Thread
 	
 	private List<PlayerMP> connectedPlayers = new ArrayList<PlayerMP>();
 	
-	public GameServer( Game game )
+	public GameServer( Game game, int port )
 	{
 		this.game = game;
 		try
 		{
-			this.socket = new DatagramSocket( 1331 );
+			this.socket = new DatagramSocket( port );
 		}
 		catch ( SocketException e )
 		{

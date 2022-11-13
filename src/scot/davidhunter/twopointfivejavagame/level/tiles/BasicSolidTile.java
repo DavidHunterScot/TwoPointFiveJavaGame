@@ -3,9 +3,9 @@ package scot.davidhunter.twopointfivejavagame.level.tiles;
 public class BasicSolidTile extends BasicTile
 {
 	
-	public BasicSolidTile( int id, int x, int y, int tileColour, int levelColour )
+	public BasicSolidTile( int id, int size, int x, int y, int tileColour, int levelColour )
 	{
-		super( id, x, y, tileColour, levelColour );
+		super( id, size, x, y, tileColour, levelColour );
 		
 		this.solid = true;
 	}

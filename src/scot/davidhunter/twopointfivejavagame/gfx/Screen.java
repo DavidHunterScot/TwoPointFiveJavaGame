@@ -1,5 +1,7 @@
 package scot.davidhunter.twopointfivejavagame.gfx;
 
+import scot.davidhunter.twopointfivejavagame.level.tiles.Tile;
+
 public class Screen
 {
 	public static final int MAP_WIDTH = 64;
@@ -40,25 +42,25 @@ public class Screen
 		int yTile = tile / 32;
 		int tileOffset = ( xTile << 3 ) + ( yTile << 3 ) * sheet.width;
 		
-		for ( int y = 0; y < 8; y++ )
+		for ( int y = 0; y < Tile.SIZE; y++ )
 		{
 			int ySheet = y;
 			
 			if ( mirrorY )
-				ySheet = 7 - y;
+				ySheet = ( Tile.SIZE - 1 ) - y;
 			
 			int yPixel = y + yPos + ( y * scaleMap ) - ( ( scaleMap << 3 ) / 2 );
 			
-			for ( int x = 0; x < 8; x++ )
+			for ( int x = 0; x < Tile.SIZE; x++ )
 			{
 				int xSheet = x;
 				
 				if ( mirrorX )
-					xSheet = 7 - x;
+					xSheet = ( Tile.SIZE - 1 ) - x;
 				
 				int xPixel = x + xPos + ( x * scaleMap ) - ( ( scaleMap << 3 ) / 2 );
 				
-				int col = ( colour >> ( sheet.pixels[ xSheet + ySheet * sheet.width + tileOffset ] * 8 ) & 255 );
+				int col = ( colour >> ( sheet.pixels[ xSheet + ySheet * sheet.width + tileOffset ] * Tile.SIZE ) & 255 );
 				
 				if ( col < 255 )
 				{
