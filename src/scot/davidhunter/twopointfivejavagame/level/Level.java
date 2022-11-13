@@ -18,7 +18,9 @@ public class Level
 	private byte[] tiles;
 	public int width;
 	public int height;
-	public List<Entity> entities = new ArrayList<Entity>();
+	
+	private List<Entity> entities = new ArrayList<Entity>();
+	
 	private String imagePath;
 	private BufferedImage image;
 	
@@ -107,9 +109,14 @@ public class Level
 		}
 	}
 	
+	public synchronized List<Entity> getEntities()
+	{
+		return this.entities;
+	}
+	
 	public void tick()
 	{
-		for ( Entity e : entities )
+		for ( Entity e : getEntities() )
 		{
 			e.tick();
 		}
@@ -147,7 +154,7 @@ public class Level
 	
 	public void renderEntities( Screen screen )
 	{
-		for ( Entity e : entities )
+		for ( Entity e : getEntities() )
 		{
 			e.render( screen );
 		}
@@ -163,14 +170,14 @@ public class Level
 	
 	public void addEntity( Entity entity )
 	{
-		this.entities.add( entity );
+		this.getEntities().add( entity );
 	}
 	
 	public void removePlayerMP( String username )
 	{
 		int index = 0;
 		
-		for ( Entity e : entities )
+		for ( Entity e : getEntities() )
 		{
 			if ( e instanceof PlayerMP && ( (PlayerMP) e ).getUsername().equals( username ) )
 				break;
@@ -178,13 +185,13 @@ public class Level
 			index++;
 		}
 		
-		this.entities.remove( index );
+		this.getEntities().remove( index );
 	}
 	
 	public int getPlayerMPIndex( String username )
 	{
 		int index = 0;
-		for ( Entity e : entities )
+		for ( Entity e : getEntities() )
 		{
 			if ( e instanceof PlayerMP && ( (PlayerMP) e ).getUsername().equals( username ) )
 				break;
@@ -195,10 +202,16 @@ public class Level
 		return index;
 	}
 	
-	public void movePlayer( String username, int x, int y )
+	public void movePlayer( String username, int x, int y, int numSteps, boolean isMoving, int movingDir )
 	{
 		int index = getPlayerMPIndex( username );
-		this.entities.get( index ).x = x;
-		this.entities.get( index ).y = y;
+		
+		PlayerMP player = (PlayerMP) this.getEntities().get( index );
+		
+		player.x = x;
+		player.y = y;
+		player.setMoving( isMoving );
+		player.setNumSteps( numSteps );
+		player.setMovingDir( movingDir );
 	}
 }
