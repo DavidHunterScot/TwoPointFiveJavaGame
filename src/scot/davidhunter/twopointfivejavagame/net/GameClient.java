@@ -93,15 +93,18 @@ public class GameClient extends Thread
 	
 	public void sendData( byte[] data )
 	{
-		DatagramPacket packet = new DatagramPacket( data, data.length, ipAddress, 1331 );
-		
-		try
+		if ( ! game.isApplet )
 		{
-			socket.send( packet );
-		}
-		catch ( IOException e )
-		{
-			e.printStackTrace();
+			DatagramPacket packet = new DatagramPacket( data, data.length, ipAddress, 1331 );
+			
+			try
+			{
+				socket.send( packet );
+			}
+			catch ( IOException e )
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 	

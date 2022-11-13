@@ -53,13 +53,6 @@ public class GameServer extends Thread
 			}
 			
 			this.parsePacket( packet.getData(), packet.getAddress(), packet.getPort() );
-			
-//			String message = new String( packet.getData() );
-//			
-//			System.out.println( "CLIENT [" + packet.getAddress().getHostAddress() + ":" + packet.getPort() + "] > " + message );
-//			
-//			if ( message.trim().equalsIgnoreCase( "ping" ) )
-//				sendData( "pong".getBytes(), packet.getAddress(), packet.getPort() );
 		}
 	}
 	
@@ -163,15 +156,18 @@ public class GameServer extends Thread
 	
 	public void sendData( byte[] data, InetAddress ipAddress, int port )
 	{
-		DatagramPacket packet = new DatagramPacket( data, data.length, ipAddress, port );
-		
-		try
+		if ( ! game.isApplet )
 		{
-			this.socket.send( packet );
-		}
-		catch ( IOException e )
-		{
-			e.printStackTrace();
+			DatagramPacket packet = new DatagramPacket( data, data.length, ipAddress, port );
+			
+			try
+			{
+				this.socket.send( packet );
+			}
+			catch ( IOException e )
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 	
