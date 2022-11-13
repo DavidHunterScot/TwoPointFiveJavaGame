@@ -14,6 +14,7 @@ import scot.davidhunter.twopointfivejavagame.net.packets.Packet;
 import scot.davidhunter.twopointfivejavagame.net.packets.Packet.PacketTypes;
 import scot.davidhunter.twopointfivejavagame.net.packets.Packet00Login;
 import scot.davidhunter.twopointfivejavagame.net.packets.Packet01Disconnect;
+import scot.davidhunter.twopointfivejavagame.net.packets.Packet02Move;
 
 public class GameServer extends Thread
 {
@@ -87,6 +88,11 @@ public class GameServer extends Thread
 				
 				this.removeConnection( (Packet01Disconnect) packet );
 				
+				break;
+			case MOVE:
+				packet = new Packet02Move( data );
+				System.out.println( ( (Packet02Move) packet ).getUsername() + " has moved to " + ( (Packet02Move) packet ).getX() + "," + ( (Packet02Move) packet ).getY() );
+				this.handleMove( ( (Packet02Move) packet ) );
 				break;
 		}
 	}
@@ -175,6 +181,17 @@ public class GameServer extends Thread
 		for ( PlayerMP p : connectedPlayers )
 		{
 			sendData( data, p.ipAddress, p.port );
+		}
+	}
+	
+	private void handleMove( Packet02Move packet )
+	{
+		if ( getPlayerMP( packet.getUsername() ) != null )
+		{
+			int index = getPlayerMPIndex( packet.getUsername() );
+			this.connectedPlayers.get( index ).x = packet.getX();
+			this.connectedPlayers.get( index ).y = packet.getY();
+			packet.writeData( this );
 		}
 	}
 }

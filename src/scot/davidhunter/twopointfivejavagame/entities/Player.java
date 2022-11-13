@@ -1,10 +1,12 @@
 package scot.davidhunter.twopointfivejavagame.entities;
 
+import scot.davidhunter.twopointfivejavagame.Game;
 import scot.davidhunter.twopointfivejavagame.InputHandler;
 import scot.davidhunter.twopointfivejavagame.gfx.Colours;
 import scot.davidhunter.twopointfivejavagame.gfx.Font;
 import scot.davidhunter.twopointfivejavagame.gfx.Screen;
 import scot.davidhunter.twopointfivejavagame.level.Level;
+import scot.davidhunter.twopointfivejavagame.net.packets.Packet02Move;
 
 public class Player extends Mob
 {
@@ -44,6 +46,9 @@ public class Player extends Mob
 		{
 			move( xa, ya );
 			isMoving = true;
+			
+			Packet02Move packet = new Packet02Move( this.getUsername(), this.x, this.y );
+			packet.writeData( Game.game.socketClient );
 		}
 		else
 			isMoving = false;

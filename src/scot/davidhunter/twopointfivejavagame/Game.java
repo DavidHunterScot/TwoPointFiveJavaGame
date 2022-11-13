@@ -30,6 +30,8 @@ public class Game extends Canvas implements Runnable
 	public static final int SCALE = 3;
 	public static final String NAME = "Two Point Five Java Game";
 	
+	public static Game game;
+	
 	public JFrame frame;
 	
 	public boolean running = false;
@@ -66,6 +68,8 @@ public class Game extends Canvas implements Runnable
 	
 	public void init()
 	{
+		game = this;
+		
 		int index = 0;
 		for ( int r = 0; r < 6; r++ )
 		{
